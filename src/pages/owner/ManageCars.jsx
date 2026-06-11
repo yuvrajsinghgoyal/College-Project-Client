@@ -1,0 +1,75 @@
+import React, { useEffect, useState } from 'react'
+import { assets, dummyCarData } from '../../assets/assets'
+import Title from '../../components/owner/Title'
+
+const currency = import.meta.env.VITE_CURRENCY
+
+const ManageCars = () => {
+
+  const [car , setCar]=useState([])
+
+  const fetchUsersCar= async ()=>{
+    setCar(dummyCarData);
+  }
+
+  useEffect(()=>{
+    fetchUsersCar()
+  },[])
+
+  return (
+    <div className='px-4 pt-10 md:px-10 w-full'>
+
+      <Title title="Manage Cars" subtitle="Manage your cars to rent"/>
+
+      <div className=' max-w-3xl  w-full rounded:md overflow-hidden border border-borderColor mt-6 '>
+        <table className=' w-full border-collapse text-left  text-sm text-gray-600 '>
+          <thead>
+              <tr>
+                <th className='p-3 font-medium'>Car</th>
+                <th className='p-3 font-medium max-md:hidden'>Catagory</th>
+                <th className='p-3 font-medium'>Price</th>
+                <th className='p-3 font-medium'>Status</th>
+                <th className='p-3 font-medium max-md:hidden'>Actions</th>
+              </tr>
+          </thead>
+          <tbody>
+            {car.map((car,index)=>(
+              <tr className=' border-t border-borderColor ' key={index}>
+                <td className='p-3 flex items-center gap-3'>
+                  <img src={car.image} className='h-12 w-12 aspect-square rounded-md object-cover' alt="" />
+                  <div className='max-md:hidden'>
+                    <p className='font-medium'>{car.brand} {car.model}</p>
+                    <p className='font-medium text-xs text-gray-500 '>{car.seating_capacity} {car.model} {car.transmission}</p>
+                  </div>
+                </td>
+
+                <td className=' p-3 max-md:hidden '>
+                  {car.category}
+                </td>
+
+                <td className=' p-3  '>
+                  {currency}
+                  {car.pricePerDay}/Day 
+                </td>
+
+                <td className=' p-3  max-md:hidden '>
+                  <span className={`px-3 py-1 rounded-full text-xs ${car.isAvaliable ? 'bg-green-100 text-green-700 ': 'bg-red-200 text-red-700'}`}>{car.isAvaliable? "Avaliable" : "UnAvailable"}</span>
+                </td>
+
+                <td className=' p-3  flex items-center'>
+                  <img src={car.isAvaliable ? assets.eye_close_icon : assets.eye_icon} className='cursor-pointer' alt="" />
+                  <img src={assets.delete_icon} className='cursor-pointer' alt="" />
+                   
+                </td>
+
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  )
+}
+
+export default ManageCars
